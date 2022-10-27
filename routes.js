@@ -1,19 +1,30 @@
-// const users = [{name:"user1", age:"16"},
-//                 {name:"user2", age:"18"},
-//                 {name:"user3", age:"17"}];
-
-User = require("./models/UserModel")
+const User = require("./models/UserModel"),
+    userController = require("./controllers/UserController");
 
 module.exports = function(app){
-    app.get("/", (req, res)=>{
-        User.find((err, users)=>{
-            if(err)
-                res.send(err);
-            res.json(users);
-        });
-    })
-    
-    app.post("/", (req, res)=>{
-        res.send(users);
-    })
+/** 
+ * @swagger
+ *   /user:
+ *       get:
+ *          tags: [user]
+ *          description: 'get all users'
+ *          responses:
+ *              200:
+ *                  description: 'success'
+ *              content:
+ *               application/json:
+ *               schema:
+ *                   type: 'array'
+ *                   items:
+ *                      properties:
+ *                       name:
+ *                        type: 'string'
+ *                        example: 'Artem'
+ *                       age:
+ *                        type: 'integer'
+ *                        example: '18'
+*/
+    app.get("/user", userController.getListOfUsers);
+    app.get("/user/:name", userController.getUsersByName);
+    app.post("/user", userController.addUser);
 }                
